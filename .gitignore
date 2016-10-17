@@ -1,0 +1,157 @@
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+ExportedObj/
+*.sln
+*.csproj
+*.pidb
+*.userprefs
+*.unityproj
+*.svd
+*.suo
+*.user
+*.booproj
+
+
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Uu]nityGenerated/
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Billboard1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Billboard1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Billboard_Panel1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Billboard_Panel1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Debris2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Debris2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ground_cliff1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ground_cliff1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ivy1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ivy1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ivy2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Ivy2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Metal_elements1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Metal_elements1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Powerboxes.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Powerboxes.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Road_el1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Road_el1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Roads.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Roads.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Street_element1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Street_element1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Streetlights.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Streetlights.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Wall3.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Wall3.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Water_tank.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/Water_tank.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/asphalt_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/asphalt_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_red_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_red_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_3.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/bricks_wall_3.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build10.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build10.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build11.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build11.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build7.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build7.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build8.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build8.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build9.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/build9.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building3.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building3.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building4.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building4.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building5.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/building5.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_3.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_3.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_plates1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/concrete_plates1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/door_glass_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/door_glass_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/door_wooden_1_d.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/door_wooden_1_d.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/floor_checker_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/floor_checker_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/overpass.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/overpass.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/rust_philars_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/rust_philars_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/rusted_bars_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/rusted_bars_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_000.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_000.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_000a.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_000a.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001a.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001a.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001b.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001b.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001c.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001c.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001d.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001d.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001e.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_001e.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_002.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_002.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_003.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_003.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_004.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_004.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_005.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_005.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_006.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_006.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_007.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_007.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_009.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_009.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_012.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_012.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_013.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_013.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_014.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_014.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_015.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/txt_015.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wall_grey_edge_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wall_grey_edge_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_2.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_2.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_3.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_3.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_4.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_4.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_5_d.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/windows_5_d.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wood_planks_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wood_planks_1.mat.meta
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wood_plywood_1.mat
+4SaintsIn3Acts/Assets/World Assets/Models/PostApoc/Materials/wood_plywood_1.mat.meta
