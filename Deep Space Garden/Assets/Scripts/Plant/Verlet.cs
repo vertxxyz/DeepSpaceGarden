@@ -1,25 +1,12 @@
-// original source:
-// http://www.xbdev.net/physics/Verlet/index.php
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using Bowk;
 
-public class Verlet : MonoBehaviour
+// original source:
+// http://www.xbdev.net/physics/Verlet/index.php
+
+public class Verlet
 {
-	[System.Serializable]
-	public struct InitPoint
-	{
-		public Vector3 pos;
-		public int parent;
-		public bool is_fixed;
-
-		public bool soft_clamp;
-		public float soft_min;
-		public float soft_max;
-	}
-
-	[System.Serializable]
 	public struct ConstraintPosition
 	{
 		public int index_0;
@@ -27,7 +14,6 @@ public class Verlet : MonoBehaviour
 		public float rest_length;
 	};
 
-	[System.Serializable]
 	public struct ConstraintSoft
 	{
 		public int index_0;
@@ -38,31 +24,31 @@ public class Verlet : MonoBehaviour
 		public float max_dist;
 	};
 
-	[System.Serializable]
 	public struct Point
 	{
-		public Vector3 curr_pos;
 		public bool	is_fixed;
 
 		public Matrix4x4 curr_mat;
 		public Matrix4x4 prev_mat;
 	};
 
-	public bool damp_enabled = true;
-	public bool gravity_enabled = false;
+	public const bool damp_enabled = true;
+	public const bool gravity_enabled = true;
 
 	private const float damp = 0.1f;
 	private const float ang_scale = 50f;
 	private const float _gravity = -9.8f;
 
-	public InitPoint[] init_data;
-
-    public Point[] _points;
+	public Point[] _points;
 	public ConstraintPosition[]  _pos_constraints;
 	public ConstraintSoft[]  _soft_constraints;
 
-	void Start()
+	private Transform _parent;
+
+	public Verlet(Plant.InitPoint[] init_data, Transform parent)
 	{
+		_parent = parent;
+
 		// init from init data
 		//--------------------------------------------------
 		_points = new Point[init_data.Length];
@@ -71,10 +57,11 @@ public class Verlet : MonoBehaviour
 			if (init_data[i].parent < 0) init_data[i].is_fixed = true;
 
 			_points[i] = new Point();
-			_points[i].curr_pos = init_data[i].pos;
+			_points[i].curr_mat.SetTRS(init_data[i].pos, Quaternion.identity, Vector3.one);
+			_points[i].prev_mat = _points[i].curr_mat;
 			_points[i].is_fixed = init_data[i].is_fixed;
 		}
-			
+
 		BetterList<ConstraintPosition> new_const_pos = new BetterList<ConstraintPosition>();
 		for(int i = 0; i < init_data.Length; ++i)
 		{
@@ -107,13 +94,6 @@ public class Verlet : MonoBehaviour
 
 		//--------------------------------------------------
 
-		for(int i = 0; i < _points.Length; ++i)
-		{
-			// set up matrix
-			_points[i].curr_mat.SetTRS(_points[i].curr_pos, Quaternion.identity, Vector3.one);
-			_points[i].prev_mat = _points[i].curr_mat;
-		}
-
 		for(int i = 0; i < _pos_constraints.Length; ++i)
 		{
 			Vector3 p0 = _points[_pos_constraints[i].index_0].curr_mat.GetColumn(3);
@@ -134,16 +114,16 @@ public class Verlet : MonoBehaviour
 		}
 	}
 
-	void Update()
-	{			
-        VerletIntegrate(Time.deltaTime);
+	public void Update()
+	{
+		VerletIntegrate(Time.deltaTime);
 
 		SatisfyConstraints();
 
 		DebugDraw();
 	}
-	
-  	void VerletIntegrate(float dt)
+
+	void VerletIntegrate(float dt)
 	{
 		const float MAX_DT = 0.1f;
 		dt = Mathf.Min(dt, MAX_DT);
@@ -168,9 +148,6 @@ public class Verlet : MonoBehaviour
 			a += _angle_constraint_force[i] * ang_scale;
 
 			if (gravity_enabled) a += new Vector3(0, _gravity, 0f);
-
-			//Vector3 tp = transform.position;
-			//Debug.DrawLine(tp + _points[i].curr_pos, tp + _points[i].curr_pos + a, Color.magenta);
 
 			if (damp_enabled)
 			{
@@ -202,12 +179,12 @@ public class Verlet : MonoBehaviour
 				for (int v = 0; v < _points.Length; v++)
 				{
 					Vector3 cp = _points[v].curr_mat.GetColumn(3);
-					if (cp.y + transform.position.y < 0f)
+					if (cp.y + _parent.position.y < 0f)
 					{
-						_points[v].curr_mat.SetColumn(3, new Vector4(cp.x, -transform.position.y, cp.z, 1f));
+						_points[v].curr_mat.SetColumn(3, new Vector4(cp.x, -_parent.position.y, cp.z, 1f));
 					}
 				}
-					
+
 				// positions constraint
 				Vector3 p0 = _points[c.index_0].curr_mat.GetColumn(3);
 				Vector3 p1 = _points[c.index_1].curr_mat.GetColumn(3);
@@ -282,7 +259,7 @@ public class Verlet : MonoBehaviour
 	{
 		bool DEBUG_MATRICES = false;
 
-		Vector3 tp = transform.position;
+		Vector3 tp = _parent.position;
 
 		// debug matrices
 		for(int i = 0; DEBUG_MATRICES && i < _points.Length; ++i)
@@ -301,11 +278,11 @@ public class Verlet : MonoBehaviour
 		}
 	}
 
-	//-----------
+	#if UNITY_EDITOR
 
-	void OnDrawGizmos()
+	public void DrawGizmos()
 	{
-		Vector3 offset = transform.position;
+		Vector3 offset = _parent == null ? Vector3.zero : _parent.position;
 
 		// Points
 		for(int i = 0; _points != null && i < _points.Length; ++i)
@@ -316,10 +293,9 @@ public class Verlet : MonoBehaviour
 			Vector3 p = _points[i].curr_mat.GetColumn(3);
 
 			Gizmos.DrawCube(offset + p, Vector3.one * 0.2f);
-			//Gizmos.DrawWireCube(offset + _points[i].curr_pos, Vector3.one);
 			UtilGizmos.DrawCircleGizmo(offset + p, 0.04f);
 		}
-		
+
 		// position constraints
 		Gizmos.color = Color.black;
 		for(int i = 0; _pos_constraints != null && i < _pos_constraints.Length; ++i)
@@ -341,40 +317,6 @@ public class Verlet : MonoBehaviour
 		Gizmos.color = Color.white;
 	}
 
+	#endif
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
