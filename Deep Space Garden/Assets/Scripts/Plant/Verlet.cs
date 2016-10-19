@@ -36,7 +36,7 @@ public class Verlet
 	public const bool gravity_enabled = true;
 
 	private const float damp = 0.1f;
-	private const float ang_scale = 50f;
+	private const float ang_scale = 100f;//50f;
 	private const float _gravity = -9.8f;
 
 	public Point[] _points;
@@ -58,6 +58,10 @@ public class Verlet
 		for(int i = 0; i < init_data.Length; ++i)
 		{
 			if (init_data[i].parent < 0) init_data[i].is_fixed = true;
+
+			// transform
+
+			init_data[i].pos *= Plant.SCALE;
 
 			_points[i] = new Point();
 			_points[i].curr_mat.SetTRS(init_data[i].pos, Quaternion.identity, Vector3.one);
@@ -87,8 +91,8 @@ public class Verlet
 				ConstraintSoft cs = new ConstraintSoft();
 				cs.index_0 = i;
 				cs.index_parent = init_data[i].parent;
-				cs.min_dist = init_data[i].soft_min;
-				cs.max_dist = init_data[i].soft_max;
+				cs.min_dist = init_data[i].soft_min * Plant.SCALE;
+				cs.max_dist = init_data[i].soft_max * Plant.SCALE;
 				new_const_soft.Add(cs);
 			}
 		}
@@ -116,7 +120,7 @@ public class Verlet
 			_soft_constraints[i].target_offset = offset;
 		}
 	}
-
+		
 	public void Update()
 	{
 		VerletIntegrate(Time.deltaTime);
@@ -131,6 +135,12 @@ public class Verlet
 	public Vector3 GetPointPos(int index)
 	{
 		return _points[index].curr_mat.GetColumn(3);
+	}
+
+	public void SetPointPos(int index, Vector3 pos)
+	{
+		_points[index].curr_mat.SetColumn(3, 
+			new Vector4(pos.x, pos.y, pos.z, 1f));
 	}
 
 	public Quaternion GetPointRot(int index)
@@ -156,6 +166,7 @@ public class Verlet
 			Vector3 curPos = _points[i].curr_mat.MultiplyPoint(Vector3.zero);
 			Vector3 a = Vector3.zero;
 
+			// debug add force
 			const float str = 15f;
 			a.x += Input.GetAxis("Horizontal") * str;
 			a.z += Input.GetAxis("Vertical") * str;

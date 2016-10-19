@@ -22,6 +22,8 @@ public class Plant : MonoBehaviour
 
 	protected Verlet _verlet = null;
 
+	public const float SCALE = 0.2f;
+
 	//------------
 
 	private MeshFilter _mf = null;
@@ -68,12 +70,14 @@ public class Plant : MonoBehaviour
 
 		int vc = _verts.size;
 
+		Vector3 scale = Vector3.one * SCALE;
+
 		// points
 		for(int i = 0; i < _verlet._points.Length; ++i)
 		{
 			Vector3 pos = _verlet._points[i].curr_mat.GetColumn(3);
 
-			UtilShape.BuildCube(pos, Quaternion.identity, Vector3.one * 0.3f,
+			UtilShape.BuildCube(pos, Quaternion.identity, scale * 0.3f,
 				ref _verts, ref _tris);
 		}
 		for(int c = vc; c < _verts.size; ++c) _colours.Add(col_joint);
@@ -86,7 +90,7 @@ public class Plant : MonoBehaviour
 			Vector3 p0 = _verlet.GetPointPos(cp.index_0);
 			Vector3 p1 = _verlet.GetPointPos(cp.index_1);
 
-			UtilShape.BuildCylinder(p0, p1, 0.2f, ref _verts, ref _tris);
+			UtilShape.BuildCylinder(p0, p1, SCALE * 0.2f, ref _verts, ref _tris);
 
 			Debug.DrawLine(transform.position + p0, transform.position + p1, Color.red);
 		}
