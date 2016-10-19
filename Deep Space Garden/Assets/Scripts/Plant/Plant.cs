@@ -26,11 +26,11 @@ public class Plant : MonoBehaviour
 
 	//------------
 
-	private MeshFilter _mf = null;
+	protected MeshFilter _mf = null;
 
-	private BetterList<Vector3> _verts = new BetterList<Vector3>();
-	private BetterList<int> _tris = new BetterList<int>();
-	private BetterList<Color> _colours = new BetterList<Color>();
+	protected BetterList<Vector3> _verts = new BetterList<Vector3>();
+	protected BetterList<int> _tris = new BetterList<int>();
+	protected BetterList<Color> _colours = new BetterList<Color>();
 
 	//------------
 
@@ -113,6 +113,28 @@ public class Plant : MonoBehaviour
 	protected virtual void OnDrawGizmos()
 	{
 		//if (_verlet != null) _verlet.DrawGizmos();
+
+		if (UnityEditor.EditorApplication.isPlaying) return;
+
+		// position constraints
+		Vector3 offset = transform.position;
+		Gizmos.color = Color.red;
+		for(int i = 0; init_data != null && i < init_data.Length; ++i)
+		{
+			int i0 = init_data[i].parent;
+			if (i0 < 0 || i0 > init_data.Length) continue;
+
+			Vector3 p0 = init_data[i].pos * SCALE;
+			Vector3 p1 = init_data[i0].pos * SCALE;
+
+			Vector3 pos0 = offset + p0;
+			Vector3 pos1 = offset + p1;
+
+			Gizmos.DrawLine(pos0, pos1);
+
+			UtilGizmos.DrawCircleGizmo(pos0, 0.01f);
+		}
+
 	}
 	#endif
 
