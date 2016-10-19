@@ -542,73 +542,78 @@ namespace Bowk
 		#endregion
 		
 		#region 3D
-		
-		// Cube
-		/// <summary>
-		/// Builds verts and tris for a cube.
-		/// </summary>
-		/// <param name='currVertCount'>
-		/// Used to offset the triangles correctly if implementing into exsisting mesh.
-		/// </param>
+
 		public static void BuildCube(Vector3 position, Quaternion rotation, Vector3 scale,
-			int currVertCount, out Vector3[] verts, out int[] tris)
+			ref BetterList<Vector3> verts, ref BetterList<int> tris)
 		{
+			int vc = verts.size;
+			int tc = tris.size;
+
+			//---
 			const float r = 0.5f;
-			verts = new Vector3[24]
+			verts.Add(new Vector3(r, -r, r));
+			verts.Add(new Vector3(-r, -r, r));
+			verts.Add(new Vector3(r, r, r));
+			verts.Add(new Vector3(-r, r, r));
+				
+			verts.Add(new Vector3(r, r, -r));
+			verts.Add(new Vector3(-r, r, -r));
+			verts.Add(new Vector3(r, -r, -r));
+			verts.Add(new Vector3(-r, -r, -r));
+				
+			verts.Add(new Vector3(r, r, r));
+			verts.Add(new Vector3(-r, r, r));
+			verts.Add(new Vector3(r, r, -r));
+			verts.Add(new Vector3(-r, r, -r));
+				
+			verts.Add(new Vector3(r, -r, -r));
+			verts.Add(new Vector3(-r, -r, r));
+			verts.Add(new Vector3(-r, -r, -r));
+			verts.Add(new Vector3(r, -r, r));
+				
+			verts.Add(new Vector3(-r, -r, r));
+			verts.Add(new Vector3(-r, r, -r));
+			verts.Add(new Vector3(-r, -r, -r));
+			verts.Add(new Vector3(-r, r, r));
+				
+			verts.Add(new Vector3(r, -r, -r));
+			verts.Add(new Vector3(r, r, r));
+			verts.Add(new Vector3(r, -r, r));
+			verts.Add(new Vector3(r, r, -r));
+
+			tris.Add(0); tris.Add(3); tris.Add(1);
+			tris.Add(0); tris.Add(2); tris.Add(3);
+
+			tris.Add(8); tris.Add(5); tris.Add(9);
+			tris.Add(8); tris.Add(4); tris.Add(5);
+
+			tris.Add(10); tris.Add(7); tris.Add(11);
+			tris.Add(10); tris.Add(6); tris.Add(7);
+
+			tris.Add(12); tris.Add(13); tris.Add(14);
+			tris.Add(12); tris.Add(15); tris.Add(13);
+
+			tris.Add(16); tris.Add(17); tris.Add(18);
+			tris.Add(16); tris.Add(19); tris.Add(17);
+
+			tris.Add(20); tris.Add(21); tris.Add(22);
+			tris.Add(20); tris.Add(23); tris.Add(21);
+
+			for(int i = tc; i < tris.size; ++i)
 			{
-				new Vector3(r, -r, r),
-				new Vector3(-r, -r, r),
-				new Vector3(r, r, r),
-				new Vector3(-r, r, r),
-				
-				new Vector3(r, r, -r),
-				new Vector3(-r, r, -r),
-				new Vector3(r, -r, -r),
-				new Vector3(-r, -r, -r),
-				
-				new Vector3(r, r, r),
-				new Vector3(-r, r, r),
-				new Vector3(r, r, -r),
-				new Vector3(-r, r, -r),
-				
-				new Vector3(r, -r, -r),
-				new Vector3(-r, -r, r),
-				new Vector3(-r, -r, -r),
-				new Vector3(r, -r, r),
-				
-				new Vector3(-r, -r, r),
-				new Vector3(-r, r, -r),
-				new Vector3(-r, -r, -r),
-				new Vector3(-r, r, r),
-				
-				new Vector3(r, -r, -r),
-				new Vector3(r, r, r),
-				new Vector3(r, -r, r),
-				new Vector3(r, r, -r),
-			};
-			
-			tris = new int[36]
-			{
-				0, 3, 1, 0, 2, 3,
-				8, 5, 9, 8, 4, 5,
-				10, 7, 11, 10, 6, 7,
-				12, 13, 14, 12, 15, 13,
-				16, 17, 18, 16, 19, 17,
-				20, 21, 22, 20, 23, 21
-			};
-			
-			for(int i = 0; currVertCount > 0 && i < tris.Length; ++i)
-			{
-				tris[i] += currVertCount;
+				tris[i] += vc;
 			}
-			
-			for (int i = 0; i < verts.Length; ++i)
+
+			Vector3 v = Vector3.zero;
+			for (int i = vc; i < verts.size; ++i)
 			{
-				verts[i].x *= scale.x;
-				verts[i].y *= scale.y;
-				verts[i].z *= scale.z;
-				verts[i] = rotation * verts[i];
-				verts[i] += position;
+				v = verts[i];
+				v.x *= scale.x;
+				v.y *= scale.y;
+				v.z *= scale.z;
+				v = rotation * v;
+				v += position;
+				verts[i] = v;
 			}
 		}
 		

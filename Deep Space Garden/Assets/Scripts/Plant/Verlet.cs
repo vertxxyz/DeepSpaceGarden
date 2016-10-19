@@ -45,6 +45,9 @@ public class Verlet
 
 	private Transform _parent;
 
+
+	//-------
+
 	public Verlet(Plant.InitPoint[] init_data, Transform parent)
 	{
 		_parent = parent;
@@ -122,6 +125,21 @@ public class Verlet
 
 		DebugDraw();
 	}
+
+	//-------
+
+	public Vector3 GetPointPos(int index)
+	{
+		return _points[index].curr_mat.GetColumn(3);
+	}
+
+	public Quaternion GetPointRot(int index)
+	{
+		return Quaternion.LookRotation(
+			_points[index].curr_mat.GetColumn(2), _points[index].curr_mat.GetColumn(1));
+	}
+
+	//-------
 
 	void VerletIntegrate(float dt)
 	{
