@@ -15,21 +15,34 @@ public class RotateLocal : MonoBehaviour {
 	public float speedChangeMax = 10f;
 	public Vector3 axis = Vector3.forward;
 
+	public int directionMultiplier = 1;
+
 
 	[ReadOnly]
 	public float circumferenceSpeed;
+	private float circumferenceSpeedTo;
 	[ReadOnly]
 	public float changeSpeedTimer = 0;
 	private float changeSpeedTime;
 
+	public AudioSource audioSource;
+	[MinMax ("Pitch", 0.1f, 10)]
+	public float pitchMin = 0.1f;
+	[HideInInspector]
+	public float pitchMax = 10f;
+
+	private float circumference;
+
 	void Start () {
 		ChangeSpeed ();
+		circumference = 2 * Mathf.PI * radius;
+		;
 	}
 
 	void ChangeSpeed () {
 		changeSpeedTime = Random.Range (speedChangeMin, speedChangeMin);
 		changeSpeedTimer = 0;
-		circumferenceSpeed = Random.Range (circumferenceSpeedMin, circumferenceSpeedMax) * Mathf.Sign (Random.value - 0.5f);
+		circumferenceSpeedTo = Random.Range (circumferenceSpeedMin, circumferenceSpeedMax) * Mathf.Sign (Random.value - 0.5f);
 	}
 
 	
@@ -38,15 +51,21 @@ public class RotateLocal : MonoBehaviour {
 		if (masterRotator == null) {
 			if (changeSpeedTimer > changeSpeedTime)
 				ChangeSpeed ();
+			circumferenceSpeed = Mathf.MoveTowards (circumferenceSpeed, circumferenceSpeedTo, Time.deltaTime * circumferenceSpeedMax);
 			RotateWithSpeed (circumferenceSpeed);
-			changeSpeedTimer += Time.deltaTime;
+			if (Mathf.Approximately (circumferenceSpeed, circumferenceSpeedTo))
+				changeSpeedTimer += Time.deltaTime;
 		} else {
 			RotateWithSpeed (masterRotator.circumferenceSpeed);
+		}
+
+		if (audioSource != null) {
+			audioSource.pitch = Mathf.Clamp (circumferenceSpeed / circumference, pitchMin, pitchMax);
 		}
 	}
 
 	void RotateWithSpeed (float c_speed) {
-		float circumference = 2 * Mathf.PI * radius;
+		c_speed *= directionMultiplier;
 		transform.localRotation = transform.localRotation * Quaternion.AngleAxis (360 * (c_speed / circumference), axis);
 	}
 

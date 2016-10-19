@@ -7,6 +7,8 @@ public class TeleportAreaController : MonoBehaviour {
 	GameObject teleportPlayArea;
 	[SerializeField, ReadOnly]
 	Transform hmd;
+	public GameObject playerTeleportLocationPrefab;
+	private Transform playerTeleportLocation;
 	// Use this for initialization
 	void Start () {
 		playArea = GetComponent<SteamVR_PlayArea> ();
@@ -25,6 +27,9 @@ public class TeleportAreaController : MonoBehaviour {
 				hmd = trackedObjects [i].transform.parent;
 			}
 		}
+
+		playerTeleportLocation = GameObject.Instantiate (playerTeleportLocationPrefab).transform;
+		playerTeleportLocation.SetParent (teleportPlayArea.transform);
 
 		teleportPlayArea.SetActive (false);
 	}
@@ -47,17 +52,28 @@ public class TeleportAreaController : MonoBehaviour {
 		moveTo = GetMoveTo (moveTo);
 		moveTo += Vector3.up * 0.01f;
 		teleportPlayArea.transform.position = moveTo;
+		StartCoroutine (SetPlayerPositionInTeleport ());
 	}
 
 	public void DisableAndTeleport (Vector3 moveTo) {
 		Disable ();
 		moveTo = GetMoveTo (moveTo);
-		moveTo += Vector3.up * 0.01f;
+		moveTo += Vector3.up * 0.015f;
 		transform.position = moveTo;
+	}
+
+	IEnumerator SetPlayerPositionInTeleport () {
+		while (true) {
+			playerTeleportLocation.localPosition = hmd.transform.localPosition;
+			playerTeleportLocation.localPosition = new Vector3 (playerTeleportLocation.localPosition.x, teleportPlayArea.transform.localPosition.y + 0.01f, playerTeleportLocation.localPosition.z);
+			playerTeleportLocation.localScale = Vector3.one * Mathf.Lerp (.8f, 1.2f, (Mathf.Sin (Time.time * 3) + 1) / 2f);
+			yield return null;
+		}
 	}
 
 	public void Disable () {
 		teleportPlayArea.SetActive (false);
+		StopAllCoroutines ();
 	}
 
 	Vector3 MaxMagnitudeEachComponent (Vector3 one, Vector3 two) {
