@@ -35,7 +35,7 @@ public class Verlet
 	public const bool damp_enabled = true;
 	public const bool gravity_enabled = true;
 
-	private const float damp = 0.1f;
+	private const float damp = 0.2f;
 	private const float ang_scale = 100f;//50f;
 	private const float _gravity = -9.8f;
 

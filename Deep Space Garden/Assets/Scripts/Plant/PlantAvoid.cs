@@ -10,12 +10,18 @@ public class PlantAvoid : MonoBehaviour
 
 	void OnEnable()
 	{
-		PlantManager.Instance.AddAvoid(this);
+		if (PlantManager.Exists)
+		{
+			PlantManager.Instance.AddAvoid(this);
+		}
 	}
 
 	void OnDisable()
 	{
-		PlantManager.Instance.RemoveAvoid(this);
+		if (PlantManager.Exists)
+		{
+			PlantManager.Instance.RemoveAvoid(this);
+		}
 	}
 
 	#if UNITY_EDITOR

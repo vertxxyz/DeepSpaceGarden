@@ -22,7 +22,8 @@ public class PlantType0 : Plant
 		p = new InitPoint();
 		p.pos = new Vector3(0f, height, 0f);
 		p.parent = 0;
-		p.soft_max = 0.1f;
+		p.soft_min = 0.05f;
+		p.soft_max = 0.05f;
 		p.soft_clamp = true;
 		points.Add(p);
 
@@ -35,7 +36,8 @@ public class PlantType0 : Plant
 
 			p.parent = 1;
 			p.soft_clamp = true;
-			p.soft_max = 0.2f;
+			p.soft_min = 0.05f;
+			p.soft_max = 0.1f;
 			points.Add(p);
 		}
 
