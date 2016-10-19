@@ -4,6 +4,9 @@ using Bowk;
 
 public class Plant : MonoBehaviour
 {
+	public Color col_stem = Color.red;
+	public Color col_joint = Color.magenta;
+
 	[System.Serializable]
 	public struct InitPoint
 	{
@@ -73,7 +76,7 @@ public class Plant : MonoBehaviour
 			UtilShape.BuildCube(pos, Quaternion.identity, Vector3.one * 0.3f,
 				ref _verts, ref _tris);
 		}
-		for(int c = vc; c < _verts.size; ++c) _colours.Add(Color.green);
+		for(int c = vc; c < _verts.size; ++c) _colours.Add(col_joint);
 		vc = _verts.size;
 
 		// connections
@@ -83,9 +86,12 @@ public class Plant : MonoBehaviour
 			Vector3 p0 = _verlet.GetPointPos(cp.index_0);
 			Vector3 p1 = _verlet.GetPointPos(cp.index_1);
 
-			Debug.DrawLine(transform.position + p0, transform.position + p1, Color.red);
+			UtilShape.BuildCylinder(p0, p1, 0.2f, ref _verts, ref _tris);
 
+			Debug.DrawLine(transform.position + p0, transform.position + p1, Color.red);
 		}
+		for(int c = vc; c < _verts.size; ++c) _colours.Add(col_stem);
+		vc = _verts.size;
 
 		//---
 

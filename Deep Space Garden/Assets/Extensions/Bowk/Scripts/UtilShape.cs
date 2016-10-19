@@ -616,6 +616,68 @@ namespace Bowk
 				verts[i] = v;
 			}
 		}
+
+		public static void BuildCylinder(Vector3 start, Vector3 end, float girth,
+			ref BetterList<Vector3> verts, ref BetterList<int> tris)
+		{
+			int vc = verts.size;
+			int tc = tris.size;
+
+			//---
+
+			Vector3 dir = end-start;
+
+			if (UtilMath.CloseTo(dir.magnitude, 0f)) return;
+
+			Vector3 tangent = Vector3.Cross(dir, Vector3.forward );
+			if( tangent.magnitude == 0 ) tangent = Vector3.Cross(dir, Vector3.up );
+
+			const int num_sides = 10;
+			Quaternion qs = Quaternion.LookRotation(dir.normalized, tangent.normalized);
+			Vector3 forward = qs * Vector3.forward;
+			Vector3 up = qs * Vector3.up;
+			float rotAngle = 360f / 10;
+			Quaternion q;
+
+			// Verts
+			for (int i = 1; i < num_sides+1; ++i)
+			{
+				q = Quaternion.AngleAxis(-rotAngle * i, forward);
+				verts.Add( start + ((q*up) * girth * 0.5f) );
+
+				verts.Add( start + dir + ((q*up) * girth * 0.5f) );
+			}
+
+			// Tris
+			int half_sides = Mathf.RoundToInt(num_sides * 0.5f);
+			for(int i = 0; i < half_sides; ++i)
+			{
+				tris.Add(0 + (i*4));
+				tris.Add(1 + (i*4));
+				tris.Add(3 + (i*4));
+
+				tris.Add(0 + (i*4));
+				tris.Add(3 + (i*4));
+				tris.Add(2 + (i*4));
+
+				int next = (i+1) % half_sides;
+
+				tris.Add(2 + (i*4));
+				tris.Add(3 + (i*4));
+				tris.Add(1 + (next * 4));
+
+				tris.Add(2 + (i*4));
+				tris.Add(1 + (next * 4));
+				tris.Add(0 + (next * 4));
+			}
+
+			//---
+
+			for(int i = tc; i < tris.size; ++i)
+			{
+				tris[i] += vc;
+			}
+		}
 		
 		// Tetrahedron
 		/// <summary>

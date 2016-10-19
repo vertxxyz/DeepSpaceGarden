@@ -189,19 +189,43 @@ public class Verlet
 
 		for (int i = 0; i < numIterations; i++)
 		{
+			// Constraint (avoids)
+			if (PlantManager.Exists)
+			{
+				for(int a = 0; a < PlantManager.Instance._avoids.Count; ++a)
+				{
+					PlantAvoid pa = PlantManager.Instance._avoids[a];
+
+					for (int v = 0; v < _points.Length; v++)
+					{
+						Vector3 pos = _parent.position + GetPointPos(v);
+
+						Vector3 dist = pos - pa.transform.position;
+
+						if (dist.magnitude < pa.radius)
+						{
+							pos = (pa.transform.position + (dist.normalized * pa.radius)) - _parent.position;
+
+							_points[v].curr_mat.SetColumn(3, 
+								new Vector4(pos.x, pos.y, pos.z, 1f));
+						}
+					}
+				}
+			}
+
+			// Constraint (floor)
+			for (int v = 0; v < _points.Length; v++)
+			{
+				Vector3 cp = _points[v].curr_mat.GetColumn(3);
+				if (cp.y + _parent.position.y < 0f)
+				{
+					_points[v].curr_mat.SetColumn(3, new Vector4(cp.x, -_parent.position.y, cp.z, 1f));
+				}
+			}
+
 			for (int k = 0; k < _pos_constraints.Length; k++)
 			{
 				ConstraintPosition c = _pos_constraints[k];
-
-				// Constraint (floor)
-				for (int v = 0; v < _points.Length; v++)
-				{
-					Vector3 cp = _points[v].curr_mat.GetColumn(3);
-					if (cp.y + _parent.position.y < 0f)
-					{
-						_points[v].curr_mat.SetColumn(3, new Vector4(cp.x, -_parent.position.y, cp.z, 1f));
-					}
-				}
 
 				// positions constraint
 				Vector3 p0 = _points[c.index_0].curr_mat.GetColumn(3);
@@ -209,7 +233,6 @@ public class Verlet
 				Vector3 delta = p1-p0;
 
 				float len = delta.magnitude;
-
 
 				float diff = (len - c.rest_length) / len;
 				//p0 += delta * 0.5f * diff;
