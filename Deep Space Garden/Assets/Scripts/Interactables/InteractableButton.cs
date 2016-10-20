@@ -56,6 +56,8 @@ public class InteractableButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		audioController = GameObject.FindObjectOfType<OneShotSounds> ();
+
 		colliderGameObject = new GameObject (name + " Collider");
 		colliderGameObject.layer = LayerMask.NameToLayer ("Interactables");
 		colliderTransform = colliderGameObject.transform;
@@ -118,17 +120,19 @@ public class InteractableButton : MonoBehaviour {
 			if (!buttonDownBool) {
 				onButtonDown.Invoke ();
 				buttonDownBool = true;
-				audioController.PlaySound (buttonDown, transform.position);
+				if (audioController != null)
+					audioController.PlaySound (buttonDown, transform.position);
 			}
-			SoundCallback = audioController.PlayLoopingSoundWithStopCallback (buttonPressedLoop, transform.position);
+			if (audioController != null)
+				SoundCallback = audioController.PlayLoopingSoundWithStopCallback (buttonPressedLoop, transform.position);
 			onButtonPressed.Invoke ();
-		} else {
-			if (buttonDownBool)
-				onButtonUp.Invoke ();
-			buttonDownBool = false;
-			audioController.PlaySound (buttonUp, transform.position);
+		} else if (buttonDownBool) {
+			onButtonUp.Invoke ();
+			if (audioController != null)
+				audioController.PlaySound (buttonUp, transform.position);
 			if (SoundCallback != null)
 				SoundCallback.Invoke ();
+			buttonDownBool = false;
 		}
 	}
 

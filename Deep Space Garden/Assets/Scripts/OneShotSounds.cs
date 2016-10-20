@@ -4,12 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class OneShotSounds : MonoBehaviour {
-	public void PlaySound (AudioClip clip, Vector3 pos) {
+	public void PlaySound (AudioClip clip, Vector3 pos, float pitch) {
+		if (clip == null)
+			return;
 		AudioSource s = GetAudioSource (pos);
 		s.clip = clip;
 		s.loop = false;
+		s.pitch = pitch;
 		s.Play ();
 		StartCoroutine (PoolSound (s));
+	}
+
+	public void PlaySound (AudioClip clip, Vector3 pos) {
+		PlaySound (clip, pos, 1);
 	}
 
 	AudioSource GetAudioSource (Vector3 position) {
@@ -41,6 +48,8 @@ public class OneShotSounds : MonoBehaviour {
 	Stack<AudioSource> pool = new Stack<AudioSource> ();
 
 	public Action PlayLoopingSoundWithStopCallback (AudioClip clip, Vector3 pos) {
+		if (clip == null)
+			return null;
 		AudioSource s = GetAudioSource (pos);
 		s.clip = clip;
 		s.loop = true;
