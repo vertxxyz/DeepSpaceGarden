@@ -1,36 +1,51 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class InteractableButton : MonoBehaviour {
 
-	[EditorOnly]
-	public float radius = 0.1f;
-	[EditorOnly]
-	public Vector2 size = new Vector2 (0.1f, 0.1f);
-	public float buttonThickness = 0.05f;
-	public float depressionDistance = 0.04f;
+	public Transform buttonTransform;
 
 	public enum ButtonShape {
 		circle,
 		square,
 	}
 
+	[Header ("Shape Variables"), Space]
 	public ButtonShape buttonShape;
-	[ReadOnly]
-	public GameObject colliderGO;
-	private Transform colliderTransform;
-	private Rigidbody colliderRigidbody;
+	[EditorOnly]
+	public float radius = 0.1f;
+	[EditorOnly]
+	public Vector2 size = new Vector2 (0.1f, 0.1f);
 
-	[MinMax ("Force", 0, 1000)]
+
+
+	[Header ("Button Variables"), Space]
+	public float buttonThickness = 0.05f;
+	public float depressionDistance = 0.04f;
+	[Range (0.1f, 1)]
+	public float activationDistance = 0.75f;
+	[MinMax ("Force", 10, 5000)]
 	public float minForce = 1;
 	[HideInInspector]
 	public float maxForce = 10;
 
+	[ReadOnly, Space]
+	public GameObject colliderGO;
+	private Transform colliderTransform;
+	private Rigidbody colliderRigidbody;
+
 	[SerializeField, HideInInspector]
 	private Mesh cylinderCollider;
 
-	public Transform buttonTransform;
 	private Vector3 originalButtonPosition;
+
+	[BetterUnityEvent]
+	public UnityEvent onButtonDown;
+	[BetterUnityEvent]
+	public UnityEvent onButtonPressed;
+	[BetterUnityEvent]
+	public UnityEvent onButtonUp;
 
 	// Use this for initialization
 	void Start () {
@@ -92,21 +107,25 @@ public class InteractableButton : MonoBehaviour {
 	void OnDrawGizmosSelected () {
 		switch (buttonShape) {
 		case ButtonShape.circle:
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position, radius, transform.up, transform.forward);
 			Gizmos.color = new Color (1, 0.5f, 0);
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * depressionDistance, radius, transform.up, transform.forward);
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * buttonThickness, radius, transform.up, transform.forward);
+			Gizmos.color = Color.green;
+			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * depressionDistance * activationDistance, radius, transform.up, transform.forward);
 			Gizmos.color = Color.white;
 			break;
 		case ButtonShape.square:
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position, transform.up, transform.right, size);
 			Gizmos.color = new Color (1, 0.5f, 0);
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * depressionDistance, transform.up, transform.right, size);
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * buttonThickness, transform.up, transform.right, size);
+			Gizmos.color = Color.green;
+			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * depressionDistance * activationDistance, transform.up, transform.right, size);
 			Gizmos.color = Color.white;
 			break;
 		}
