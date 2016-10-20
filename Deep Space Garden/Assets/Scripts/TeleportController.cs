@@ -17,7 +17,7 @@ public class TeleportController : MonoBehaviour {
 	bool GetHit (out Vector3 pos) {
 		RaycastHit hit;
 		LayerMask mask = int.MaxValue;
-		mask = mask.RemoveFromMask ("Controllers");
+		mask = mask.RemoveFromMask ("Controllers", "ControllersInactive");
 		if (Physics.Raycast (transform.position, transform.forward, out hit, Mathf.Infinity, mask)) {
 			NavMeshHit navHit;
 			if (NavMesh.SamplePosition (hit.point, out navHit, 10, NavMesh.AllAreas)) {
