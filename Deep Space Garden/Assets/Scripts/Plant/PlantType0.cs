@@ -49,9 +49,9 @@ public class PlantType0 : Plant
 
 		int attempt_count = 0;
 		const int max_attempt = 1000;
-		int fuzz_cout = 0;
+		int fuzz_count = 0;
 
-		while (fuzz_cout < num_fuzz && attempt_count < max_attempt)
+		while (fuzz_count < num_fuzz && attempt_count < max_attempt)
 		{
 			attempt_count++;
 
@@ -71,9 +71,9 @@ public class PlantType0 : Plant
 			p.soft_min = 0.05f;
 			p.soft_max = 0.1f;
 			points.Add(p);
-			fuzz_cout++;
+			fuzz_count++;
 
-			//fuzz_directions.Add(rnd);
+			fuzz_directions.Add(rnd);
 			fuzz_points.Add(p.pos);
 		}
 
