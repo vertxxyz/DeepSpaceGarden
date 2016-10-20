@@ -12,6 +12,12 @@ ModelImporter:
     100008: Title
     100010: WheelBottom
     100012: WheelTop
+    100014: ButtonFBorder
+    100016: ButtonFront
+    100018: ButtonLBorder
+    100020: ButtonLeft
+    100022: ButtonRBorder
+    100024: ButtonRight
     400000: BaseShape
     400002: //RootNode
     400004: GuideWheel
@@ -19,24 +25,48 @@ ModelImporter:
     400008: Title
     400010: WheelBottom
     400012: WheelTop
+    400014: ButtonFBorder
+    400016: ButtonFront
+    400018: ButtonLBorder
+    400020: ButtonLeft
+    400022: ButtonRBorder
+    400024: ButtonRight
     2300000: BaseShape
     2300002: GuideWheel
     2300004: Tape
     2300006: Title
     2300008: WheelBottom
     2300010: WheelTop
+    2300012: ButtonFBorder
+    2300014: ButtonFront
+    2300016: ButtonLBorder
+    2300018: ButtonLeft
+    2300020: ButtonRBorder
+    2300022: ButtonRight
     3300000: BaseShape
     3300002: GuideWheel
     3300004: Tape
     3300006: Title
     3300008: WheelBottom
     3300010: WheelTop
+    3300012: ButtonFBorder
+    3300014: ButtonFront
+    3300016: ButtonLBorder
+    3300018: ButtonLeft
+    3300020: ButtonRBorder
+    3300022: ButtonRight
     4300000: WheelTop
     4300002: GuideWheel
     4300004: Tape
     4300006: WheelBottom
     4300008: BaseShape
     4300010: Title
+    4300012: ButtonFront
+    4300014: ButtonFBorder
+    4300016: ButtonLeft
+    4300018: ButtonLBorder
+    4300020: ButtonRBorder
+    4300022: ButtonRight
     7400000: Take 001
     9500000: //RootNode
   materials:
