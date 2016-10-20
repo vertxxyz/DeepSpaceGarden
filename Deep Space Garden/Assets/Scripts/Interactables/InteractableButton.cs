@@ -31,7 +31,7 @@ public class InteractableButton : MonoBehaviour {
 	public float maxForce = 10;
 
 	[ReadOnly, Space]
-	public GameObject colliderGO;
+	public GameObject colliderGameObject;
 	private Transform colliderTransform;
 	private Rigidbody colliderRigidbody;
 
@@ -40,7 +40,14 @@ public class InteractableButton : MonoBehaviour {
 
 	private Vector3 originalButtonPosition;
 
-	[BetterUnityEvent]
+	[Space, Header ("Audio")]
+	public AudioClip buttonDown;
+	public AudioClip buttonPressedLoop;
+	public AudioClip buttonUp;
+	[ReadOnly]
+	public OneShotSounds audioController;
+
+	[Space, Header ("Events"), BetterUnityEvent]
 	public UnityEvent onButtonDown;
 	[BetterUnityEvent]
 	public UnityEvent onButtonPressed;
@@ -49,26 +56,26 @@ public class InteractableButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		colliderGO = new GameObject (name + " Collider");
-		colliderGO.layer = LayerMask.NameToLayer ("Interactables");
-		colliderTransform = colliderGO.transform;
+		colliderGameObject = new GameObject (name + " Collider");
+		colliderGameObject.layer = LayerMask.NameToLayer ("Interactables");
+		colliderTransform = colliderGameObject.transform;
 		colliderTransform.SetParent (transform);
 		colliderTransform.localRotation = Quaternion.identity;
 		colliderTransform.localPosition = Vector3.forward * buttonThickness / 2f;
 		switch (buttonShape) {
 		case ButtonShape.circle:
-			MeshFilter mF = colliderGO.AddComponent<MeshFilter> ();
+			MeshFilter mF = colliderGameObject.AddComponent<MeshFilter> ();
 			mF.mesh = cylinderCollider;
-			MeshCollider mC = colliderGO.AddComponent<MeshCollider> ();
+			MeshCollider mC = colliderGameObject.AddComponent<MeshCollider> ();
 			mC.convex = true;
 			colliderTransform.localScale = new Vector3 (radius, radius, buttonThickness / 2f);
 			break;
 		case ButtonShape.square:
-			BoxCollider bC = colliderGO.AddComponent<BoxCollider> ();
+			BoxCollider bC = colliderGameObject.AddComponent<BoxCollider> ();
 			bC.size = new Vector3 (size.x * 2, size.y * 2, buttonThickness);
 			break;
 		}
-		colliderRigidbody = colliderGO.AddComponent<Rigidbody> ();
+		colliderRigidbody = colliderGameObject.AddComponent<Rigidbody> ();
 		colliderRigidbody.useGravity = false;
 		colliderRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
@@ -95,6 +102,9 @@ public class InteractableButton : MonoBehaviour {
 		colliderRigidbody.AddRelativeForce (-force * Vector3.forward * (minForce + Mathf.InverseLerp (0, buttonThickness / 2f, Mathf.Abs (force)) * maxForce), ForceMode.Force);
 	}
 
+	bool buttonDownBool = false;
+	System.Action SoundCallback;
+
 	// Update is called once per frame
 	void Update () {
 		if (buttonTransform == null)
@@ -102,6 +112,24 @@ public class InteractableButton : MonoBehaviour {
 		Vector3 worldDirection = transform.forward;
 		Vector3 worldPosition = transform.TransformPoint (originalButtonPosition);
 		buttonTransform.position = worldPosition + worldDirection * Mathf.Clamp (colliderTransform.localPosition.z - buttonThickness / 2f, 0, depressionDistance);
+		float buttonDownNormalised = Mathf.InverseLerp (0, depressionDistance, colliderTransform.localPosition.z - buttonThickness / 2f);
+
+		if (buttonDownNormalised >= activationDistance) {
+			if (!buttonDownBool) {
+				onButtonDown.Invoke ();
+				buttonDownBool = true;
+				audioController.PlaySound (buttonDown, transform.position);
+			}
+			SoundCallback = audioController.PlayLoopingSoundWithStopCallback (buttonPressedLoop, transform.position);
+			onButtonPressed.Invoke ();
+		} else {
+			if (buttonDownBool)
+				onButtonUp.Invoke ();
+			buttonDownBool = false;
+			audioController.PlaySound (buttonUp, transform.position);
+			if (SoundCallback != null)
+				SoundCallback.Invoke ();
+		}
 	}
 
 	void OnDrawGizmosSelected () {
