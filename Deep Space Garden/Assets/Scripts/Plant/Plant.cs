@@ -41,6 +41,16 @@ public class Plant : MonoBehaviour
 		_mf.mesh.MarkDynamic();
 	}
 
+	void OnEnable()
+	{
+		if (PlantManager.Exists) PlantManager.Instance.AddPlant(this);
+	}
+
+	void OnDisable()
+	{
+		if (PlantManager.Exists) PlantManager.Instance.RemovePlant(this);
+	}
+
 	//------------
 
 	protected virtual void GeneratePlant()

@@ -6,7 +6,11 @@ using Bowk;
 
 public class PlantType0 : Plant
 {
-	public float height = 2f;
+	[MinMax("height", 0f, 10f)]
+	public float min_height = 1f;
+	[HideInInspector]
+	public float max_height = 4f;
+
 	public int num_fuzz = 10;
 	public float fuzz_dist = 2f;
 
@@ -18,6 +22,8 @@ public class PlantType0 : Plant
 		p.pos = Vector3.zero;
 		p.is_fixed = true;
 		points.Add(p);
+
+		float height = Random.Range(min_height, max_height);
 
 		p = new InitPoint();
 		p.pos = new Vector3(0f, height, 0f);
@@ -58,4 +64,5 @@ public class PlantType0 : Plant
 	{
 		base.BuildMesh ();
 	}
+
 }
