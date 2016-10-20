@@ -1,59 +1,81 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class InteractableButton : MonoBehaviour {
 
-	[EditorOnly]
-	public float radius = 0.1f;
-	[EditorOnly]
-	public Vector2 size = new Vector2 (0.1f, 0.1f);
-	public float buttonThickness = 0.05f;
-	public float depressionDistance = 0.04f;
+	public Transform buttonTransform;
 
 	public enum ButtonShape {
 		circle,
 		square,
 	}
 
+	[Header ("Shape Variables"), Space]
 	public ButtonShape buttonShape;
-	[ReadOnly]
-	public GameObject colliderGO;
-	private Transform colliderTransform;
-	private Rigidbody colliderRigidbody;
+	[EditorOnly]
+	public float radius = 0.1f;
+	[EditorOnly]
+	public Vector2 size = new Vector2 (0.1f, 0.1f);
 
-	[MinMax ("Force", 0, 1000)]
+
+
+	[Header ("Button Variables"), Space]
+	public float buttonThickness = 0.05f;
+	public float depressionDistance = 0.04f;
+	[Range (0.1f, 1)]
+	public float activationDistance = 0.75f;
+	[MinMax ("Force", 10, 5000)]
 	public float minForce = 1;
 	[HideInInspector]
 	public float maxForce = 10;
 
+	[ReadOnly, Space]
+	public GameObject colliderGameObject;
+	private Transform colliderTransform;
+	private Rigidbody colliderRigidbody;
+
 	[SerializeField, HideInInspector]
 	private Mesh cylinderCollider;
 
-	public Transform buttonTransform;
 	private Vector3 originalButtonPosition;
+
+	[Space, Header ("Audio")]
+	public AudioClip buttonDown;
+	public AudioClip buttonPressedLoop;
+	public AudioClip buttonUp;
+	[ReadOnly]
+	public OneShotSounds audioController;
+
+	[Space, Header ("Events"), BetterUnityEvent]
+	public UnityEvent onButtonDown;
+	[BetterUnityEvent]
+	public UnityEvent onButtonPressed;
+	[BetterUnityEvent]
+	public UnityEvent onButtonUp;
 
 	// Use this for initialization
 	void Start () {
-		colliderGO = new GameObject (name + " Collider");
-		colliderGO.layer = LayerMask.NameToLayer ("Interactables");
-		colliderTransform = colliderGO.transform;
+		colliderGameObject = new GameObject (name + " Collider");
+		colliderGameObject.layer = LayerMask.NameToLayer ("Interactables");
+		colliderTransform = colliderGameObject.transform;
 		colliderTransform.SetParent (transform);
 		colliderTransform.localRotation = Quaternion.identity;
 		colliderTransform.localPosition = Vector3.forward * buttonThickness / 2f;
 		switch (buttonShape) {
 		case ButtonShape.circle:
-			MeshFilter mF = colliderGO.AddComponent<MeshFilter> ();
+			MeshFilter mF = colliderGameObject.AddComponent<MeshFilter> ();
 			mF.mesh = cylinderCollider;
-			MeshCollider mC = colliderGO.AddComponent<MeshCollider> ();
+			MeshCollider mC = colliderGameObject.AddComponent<MeshCollider> ();
 			mC.convex = true;
 			colliderTransform.localScale = new Vector3 (radius, radius, buttonThickness / 2f);
 			break;
 		case ButtonShape.square:
-			BoxCollider bC = colliderGO.AddComponent<BoxCollider> ();
+			BoxCollider bC = colliderGameObject.AddComponent<BoxCollider> ();
 			bC.size = new Vector3 (size.x * 2, size.y * 2, buttonThickness);
 			break;
 		}
-		colliderRigidbody = colliderGO.AddComponent<Rigidbody> ();
+		colliderRigidbody = colliderGameObject.AddComponent<Rigidbody> ();
 		colliderRigidbody.useGravity = false;
 		colliderRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
@@ -80,6 +102,9 @@ public class InteractableButton : MonoBehaviour {
 		colliderRigidbody.AddRelativeForce (-force * Vector3.forward * (minForce + Mathf.InverseLerp (0, buttonThickness / 2f, Mathf.Abs (force)) * maxForce), ForceMode.Force);
 	}
 
+	bool buttonDownBool = false;
+	System.Action SoundCallback;
+
 	// Update is called once per frame
 	void Update () {
 		if (buttonTransform == null)
@@ -87,26 +112,48 @@ public class InteractableButton : MonoBehaviour {
 		Vector3 worldDirection = transform.forward;
 		Vector3 worldPosition = transform.TransformPoint (originalButtonPosition);
 		buttonTransform.position = worldPosition + worldDirection * Mathf.Clamp (colliderTransform.localPosition.z - buttonThickness / 2f, 0, depressionDistance);
+		float buttonDownNormalised = Mathf.InverseLerp (0, depressionDistance, colliderTransform.localPosition.z - buttonThickness / 2f);
+
+		if (buttonDownNormalised >= activationDistance) {
+			if (!buttonDownBool) {
+				onButtonDown.Invoke ();
+				buttonDownBool = true;
+				audioController.PlaySound (buttonDown, transform.position);
+			}
+			SoundCallback = audioController.PlayLoopingSoundWithStopCallback (buttonPressedLoop, transform.position);
+			onButtonPressed.Invoke ();
+		} else {
+			if (buttonDownBool)
+				onButtonUp.Invoke ();
+			buttonDownBool = false;
+			audioController.PlaySound (buttonUp, transform.position);
+			if (SoundCallback != null)
+				SoundCallback.Invoke ();
+		}
 	}
 
 	void OnDrawGizmosSelected () {
 		switch (buttonShape) {
 		case ButtonShape.circle:
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position, radius, transform.up, transform.forward);
 			Gizmos.color = new Color (1, 0.5f, 0);
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * depressionDistance, radius, transform.up, transform.forward);
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * buttonThickness, radius, transform.up, transform.forward);
+			Gizmos.color = Color.green;
+			Bowk.UtilGizmos.DrawCircleGizmo (transform.position + transform.forward * depressionDistance * activationDistance, radius, transform.up, transform.forward);
 			Gizmos.color = Color.white;
 			break;
 		case ButtonShape.square:
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position, transform.up, transform.right, size);
 			Gizmos.color = new Color (1, 0.5f, 0);
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * depressionDistance, transform.up, transform.right, size);
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.cyan;
 			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * buttonThickness, transform.up, transform.right, size);
+			Gizmos.color = Color.green;
+			Bowk.UtilGizmos.DrawSquareGizmo (transform.position + transform.forward * depressionDistance * activationDistance, transform.up, transform.right, size);
 			Gizmos.color = Color.white;
 			break;
 		}
