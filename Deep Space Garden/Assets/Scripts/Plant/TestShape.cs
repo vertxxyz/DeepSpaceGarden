@@ -39,13 +39,13 @@ public class TestShape : MonoBehaviour
 
 		int vc = _verts.size;
 
-		UtilShape.BuildSphere(Vector3.zero, Quaternion.identity, Vector3.one, 24, 16,
-			ref _verts, ref _tris);
+		//UtilShape.BuildSphere(Vector3.zero, Quaternion.identity, Vector3.one, 24, 16,
+		//	ref _verts, ref _tris);
 
 		for(int i = vc; i < _verts.size; ++i) _colours.Add(Color.white);
 		vc = _verts.size;
 
-		UtilShape.BuildSphere(new Vector3(1.5f, 0f, 0f), Quaternion.identity, Vector3.one * 0.25f,
+		UtilShape.BuildSphere(new Vector3(0f, 0f, 0f), Quaternion.identity, Vector3.one * 1f,
 			12, 8, ref _verts, ref _tris);
 
 		for(int i = vc; i < _verts.size; ++i) _colours.Add(Color.cyan);

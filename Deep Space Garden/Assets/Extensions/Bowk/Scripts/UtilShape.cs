@@ -450,7 +450,7 @@ namespace Bowk
 			{
 				tris[i*3+0] = 0;
 				tris[i*3+1] = ((i+1) % (numSides+1));
-				tris[i*3+2] = ((i+1) % (numSides))+1;			
+				tris[i*3+2] = ((i+1) % (numSides))+1;	
 			}
 			
 			// Increment tris
@@ -641,7 +641,7 @@ namespace Bowk
 				float sin1 = Mathf.Sin(a1);
 				float cos1 = Mathf.Cos(a1);
 
-				for( int lon = 0; lon <= nbLong; lon++ )
+				for( int lon = 0; lon <= nbLong-1; lon++ )
 				{
 					float a2 = _2pi * (float)(lon == nbLong ? 0 : lon) / nbLong;
 
@@ -658,8 +658,8 @@ namespace Bowk
 			//Top Cap
 			for( int lon = 0; lon < nbLong; lon++ )
 			{
-				tris.Add(lon+2);
-				tris.Add(lon+1);
+				tris.Add(((lon+1) % (nbLong))+1);
+				tris.Add(((lon+1) % (nbLong+1)));
 				tris.Add(0);
 			}
 
@@ -668,8 +668,8 @@ namespace Bowk
 			{
 				for( int lon = 0; lon < nbLong; lon++ )
 				{
-					int current = lon + lat * (nbLong + 1) + 1;
-					int next = current + nbLong + 1;
+					int current = lon + lat * (nbLong-1 + 1) + 1;
+					int next = current + nbLong-1;
 
 					tris.Add(current);
 					tris.Add(current + 1);
@@ -682,11 +682,15 @@ namespace Bowk
 			}
 
 			//Bottom Cap
+			int vd = verts.size - vc;
 			for( int lon = 0; lon < nbLong; lon++ )
 			{
-				tris.Add(verts.size - vc - 1);
-				tris.Add(verts.size - vc - (lon+2) - 1);
-				tris.Add(verts.size - vc - (lon+1) - 1);
+				int l2 = ((lon+1) % (nbLong))+1;
+				int l1 = ((lon+1) % (nbLong+1));
+
+				tris.Add(vd - 1);
+				tris.Add(vd - (l2) - 1);
+				tris.Add(vd - (l1) - 1);
 			}
 
 			//------
