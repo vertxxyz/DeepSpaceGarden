@@ -10,10 +10,7 @@ public class PlantAvoid : MonoBehaviour
 
 	void OnEnable()
 	{
-		if (PlantManager.Exists)
-		{
-			PlantManager.Instance.AddAvoid(this);
-		}
+		PlantManager.Instance.AddAvoid(this);
 	}
 
 	void OnDisable()

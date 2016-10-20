@@ -44,6 +44,24 @@ namespace Bowk
 			return closest;
 		}
 
+		public static Vector3 ClosestPointOnLineSegment3D(Vector3 a, Vector3 b, Vector3 p)
+		{
+			Vector3 v = b - a;
+			Vector3 w = p - a;
+
+			float c1 = Vector3.Dot(w,v);
+			if ( c1 <= 0 )
+				return a;
+
+			float c2 = Vector3.Dot(v,v);
+			if ( c2 <= c1 )
+				return b;
+
+			float b2 = c1 / c2;
+			Vector3 Pb = a + (b2 * v);
+			return Pb;
+		}
+
 		public static Vector2 ClosestPointOnRect(Rect r, Vector2 p)
 		{
 			Vector2 p1 = new Vector2(r.xMin, r.yMax);

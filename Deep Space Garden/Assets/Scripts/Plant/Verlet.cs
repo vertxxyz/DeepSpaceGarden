@@ -207,6 +207,7 @@ public class Verlet
 				{
 					PlantAvoid pa = PlantManager.Instance._avoids[a];
 
+					// points
 					for (int v = 0; v < _points.Length; v++)
 					{
 						Vector3 pos = _parent.position + GetPointPos(v);
@@ -304,6 +305,39 @@ public class Verlet
 			//Vector3 tp = transform.position;
 			//Debug.DrawLine(tp + p0, tp + p0 + force, Color.yellow);
 			//Debug.DrawLine(tp + p1, tp + p1 + target, Color.cyan);
+		}
+
+		// Constraint (avoids)
+		if (PlantManager.Exists)
+		{
+			for(int a = 0; a < PlantManager.Instance._avoids.Count; ++a)
+			{
+				PlantAvoid pa = PlantManager.Instance._avoids[a];
+
+				// segments
+
+				for (int v = 0; v < _pos_constraints.Length; v++)
+				{
+					int i0 = _pos_constraints[v].index_0;
+					int i1 = _pos_constraints[v].index_1;
+
+					Vector3 p0 = _parent.position + GetPointPos(i0);
+					Vector3 p1 = _parent.position + GetPointPos(i1);
+
+					Vector3 closest = UtilMath.ClosestPointOnLineSegment3D(p0, p1, pa.transform.position);
+					Vector3 dist = closest - pa.transform.position;
+
+					if (dist.magnitude < pa.radius)
+					{
+						float multi = 1f - (dist.magnitude / pa.radius);
+
+						Vector3 push = (dist.normalized * pa.radius) * multi;
+
+						_angle_constraint_force[i0] += push;
+						_angle_constraint_force[i1] += push;
+					}
+				}
+			}
 		}
 	}
 
