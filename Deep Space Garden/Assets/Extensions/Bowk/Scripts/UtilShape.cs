@@ -617,6 +617,98 @@ namespace Bowk
 			}
 		}
 
+		public static void BuildSphere(Vector3 position, Quaternion rotation, Vector3 scale, int n_long, int n_lat,
+			ref BetterList<Vector3> verts, ref BetterList<int> tris)
+		{
+			int vc = verts.size;
+			int tc = tris.size;
+
+			//------
+
+			float radius = 1f;
+			// Longitude |||
+			int nbLong = n_long; // 24
+			// Latitude ---
+			int nbLat = n_lat; // 16
+
+			float _pi = Mathf.PI;
+			float _2pi = _pi * 2f;
+
+			verts.Add(Vector3.up * radius);
+			for( int lat = 0; lat < nbLat; lat++ )
+			{
+				float a1 = _pi * (float)(lat+1) / (nbLat+1);
+				float sin1 = Mathf.Sin(a1);
+				float cos1 = Mathf.Cos(a1);
+
+				for( int lon = 0; lon <= nbLong; lon++ )
+				{
+					float a2 = _2pi * (float)(lon == nbLong ? 0 : lon) / nbLong;
+
+					float sin2 = Mathf.Sin(a2);
+					float cos2 = Mathf.Cos(a2);
+
+					verts.Add(new Vector3( sin1 * cos2, cos1, sin1 * sin2 ) * radius);
+				}
+			}
+			verts.Add(Vector3.up * -radius);
+
+			// tris
+
+			//Top Cap
+			for( int lon = 0; lon < nbLong; lon++ )
+			{
+				tris.Add(lon+2);
+				tris.Add(lon+1);
+				tris.Add(0);
+			}
+
+			//Middle
+			for( int lat = 0; lat < nbLat - 1; lat++ )
+			{
+				for( int lon = 0; lon < nbLong; lon++ )
+				{
+					int current = lon + lat * (nbLong + 1) + 1;
+					int next = current + nbLong + 1;
+
+					tris.Add(current);
+					tris.Add(current + 1);
+					tris.Add(next + 1);
+
+					tris.Add(current);
+					tris.Add(next + 1);
+					tris.Add(next);
+				}
+			}
+
+			//Bottom Cap
+			for( int lon = 0; lon < nbLong; lon++ )
+			{
+				tris.Add(verts.size - vc - 1);
+				tris.Add(verts.size - vc - (lon+2) - 1);
+				tris.Add(verts.size - vc - (lon+1) - 1);
+			}
+
+			//------
+
+			for(int i = tc; i < tris.size; ++i)
+			{
+				tris[i] += vc;
+			}
+
+			Vector3 v = Vector3.zero;
+			for (int i = vc; i < verts.size; ++i)
+			{
+				v = verts[i];
+				v.x *= scale.x;
+				v.y *= scale.y;
+				v.z *= scale.z;
+				v = rotation * v;
+				v += position;
+				verts[i] = v;
+			}
+		}
+
 		public static void BuildCylinder(Vector3 start, Vector3 end, float girth,
 			ref BetterList<Vector3> verts, ref BetterList<int> tris)
 		{

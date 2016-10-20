@@ -5,10 +5,6 @@ using Bowk;
 public class TestShape : MonoBehaviour
 {
 
-	public Vector3 start = Vector3.zero;
-	public Vector3 end = Vector3.zero;
-	public float girth = 0.2f;
-
 	//------------
 
 	private MeshFilter _mf = null;
@@ -43,15 +39,18 @@ public class TestShape : MonoBehaviour
 
 		int vc = _verts.size;
 
-		UtilShape.BuildCylinder(start, end, girth,
+		UtilShape.BuildSphere(Vector3.zero, Quaternion.identity, Vector3.one, 24, 16,
 			ref _verts, ref _tris);
 
-		Debug.DrawLine(transform.position + start, transform.position + end, Color.red);
+		for(int i = vc; i < _verts.size; ++i) _colours.Add(Color.white);
+		vc = _verts.size;
 
-		UtilDebug.DrawCircle(transform.position + start, girth * 0.5f, Color.red, 0f,
-			Vector3.forward, Vector3.up);
-		UtilDebug.DrawCircle(transform.position + end, girth * 0.5f, Color.red, 0f,
-			Vector3.forward, Vector3.up);
+		UtilShape.BuildSphere(new Vector3(1.5f, 0f, 0f), Quaternion.identity, Vector3.one * 0.25f,
+			12, 8, ref _verts, ref _tris);
+
+		for(int i = vc; i < _verts.size; ++i) _colours.Add(Color.cyan);
+		vc = _verts.size;
+
 
 		//---
 

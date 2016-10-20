@@ -87,7 +87,9 @@ public class Plant : MonoBehaviour
 		{
 			Vector3 pos = _verlet._points[i].curr_mat.GetColumn(3);
 
-			UtilShape.BuildCube(pos, Quaternion.identity, scale * 0.3f,
+			//UtilShape.BuildCube(pos, Quaternion.identity, scale * 0.3f, ref _verts, ref _tris);
+
+			UtilShape.BuildSphere(pos, Quaternion.identity, scale * 0.3f, 8, 6,
 				ref _verts, ref _tris);
 		}
 		for(int c = vc; c < _verts.size; ++c) _colours.Add(col_joint);
