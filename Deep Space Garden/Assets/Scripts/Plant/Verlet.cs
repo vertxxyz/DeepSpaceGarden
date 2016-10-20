@@ -214,12 +214,47 @@ public class Verlet
 
 						Vector3 dist = pos - pa.transform.position;
 
-						if (dist.magnitude < pa.radius)
+						float r = pa.radius + Plant.SCALE * 0.3f;
+
+						if (dist.magnitude < r)
 						{
-							pos = (pa.transform.position + (dist.normalized * pa.radius)) - _parent.position;
+							pos = (pa.transform.position + (dist.normalized * r)) - _parent.position;
 
 							_points[v].curr_mat.SetColumn(3, 
 								new Vector4(pos.x, pos.y, pos.z, 1f));
+						}
+					}
+
+					// segments
+					for (int v = 0; v < _pos_constraints.Length; v++)
+					{
+						int i0 = _pos_constraints[v].index_0;
+						int i1 = _pos_constraints[v].index_1;
+
+						Vector3 p0 = _parent.position + GetPointPos(i0);
+						Vector3 p1 = _parent.position + GetPointPos(i1);
+
+						Vector3 closest = UtilMath.ClosestPointOnLineSegment3D(p0, p1, pa.transform.position);
+						Vector3 dist = closest - pa.transform.position;
+
+						float r = pa.radius + Plant.SCALE * 0.1f;
+
+						if (dist.magnitude < r)
+						{
+							dist = (dist.normalized * r) - dist;
+
+							// set point
+							p0 = GetPointPos(i0) + dist;
+							p1 = GetPointPos(i1) + dist;
+
+							SetPointPos(i0, p0);
+							SetPointPos(i1, p1);
+
+							// force
+							//float multi = 1f - (dist.magnitude / pa.radius);
+							//Vector3 push = (dist.normalized * pa.radius) * multi;
+							//_angle_constraint_force[i0] += push;
+							//_angle_constraint_force[i1] += push;
 						}
 					}
 				}
@@ -307,7 +342,8 @@ public class Verlet
 			//Debug.DrawLine(tp + p1, tp + p1 + target, Color.cyan);
 		}
 
-		// Constraint (avoids)
+		// force for segments
+		/*
 		if (PlantManager.Exists)
 		{
 			for(int a = 0; a < PlantManager.Instance._avoids.Count; ++a)
@@ -315,7 +351,6 @@ public class Verlet
 				PlantAvoid pa = PlantManager.Instance._avoids[a];
 
 				// segments
-
 				for (int v = 0; v < _pos_constraints.Length; v++)
 				{
 					int i0 = _pos_constraints[v].index_0;
@@ -338,7 +373,7 @@ public class Verlet
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	private void DebugDraw()
