@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: 1132f0d1b1532e347a9cbd8984bb8a04
-timeCreated: 1476929752
+timeCreated: 1476931762
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cylinderCollider: {fileID: 4300000, guid: 144084db2a0adc24c97f88088e26774e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
